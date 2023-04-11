@@ -1,0 +1,17 @@
+It is now the BOTE phase. Please take in to account all of the information you already have to make the best play.
+
+You MUST vote on another player. If you don't have enough information to vote, you should still pick another player.
+
+You CANNOT vote for yourself.
+
+Please vote in a way to attempt to win the game.
+
+Please include your reasoning.
+
+Please response in one of the following way. Response ONLY with the JSON block (with substitutions) and NOTHING ELSE!
+
+{
+    "voted_player": "[voted player]",
+    "reasoning": "[reasoning]"
+}
+

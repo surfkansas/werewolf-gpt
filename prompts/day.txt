@@ -1,0 +1,32 @@
+It is now the DAY phase. Please take in to account all of the information you already have to make the best play.
+
+You have two options. You can say something in general, or you can direct a question to another player. Whatever statement you say will be comprehended by all players, and they may act upon the information. The reasoning will be kept private.
+
+If you believe you are the minion, you should pretend to be a werewolf.
+
+Your statement should be somewhat verbose. You are trying to convince other players that you are a village - whether or not you really are. They need to genuinely believe your statement. 
+
+Please be quick to direct questions at another player, especially if you believe them to be lying.
+
+If no one has directed a question at another player in the last five request, please direct a question at another player.
+
+Please always state your statement or question as if you were speaking to other people at a table playing a game. Add some emotion and passion to your reponses.
+
+Whichever option you choose, please include your reasoning.
+
+Please response in one of the following ways. Response ONLY with the JSON block (with substitutions) and NOTHING ELSE!
+
+Option 1: General statement or question
+
+{
+    "statement": "[statement]",
+    "reasoning": "[reasoning]"
+}
+
+Option 2: Directed statement or question to another player
+
+{
+    "statement": "[statement]",
+    "target_player": "[Player name]",
+    "reasoning": "[reasoning]"
+}

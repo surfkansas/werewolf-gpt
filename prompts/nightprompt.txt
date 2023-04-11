@@ -1,0 +1,19 @@
+When you are done with questions, say "I am ready to vote."
+
+For this game, your name is Alice. Your fellow players are Bob, Charlie, and Doug.
+
+Your card is WEREWOLF.
+
+When responding, please reply as follows:
+
+ACTION: <your action>
+
+REASONING: <your reasoning>
+
+---
+
+NIGHTTIME: No other players revealed themselves as a werewolf
+
+---
+
+Begin!
