@@ -5,8 +5,6 @@ import random
 import json
 from colorama import Fore, Style
 
-#openai.api_key = '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'
-
 colorama.init()
 
 class Player:
