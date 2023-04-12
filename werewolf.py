@@ -185,21 +185,21 @@ class Game:
             reasoning = action['reasoning']
             choice = action['choice']
             print()
-            print(f'{seer_players[0].colored_name} {Fore.RED}{Style.DIM}(thougts): {reasoning}{Style.RESET_ALL}')
+            print(f'{seer_players[0].colored_name} {Fore.RED}{Style.DIM}(thoughts): {reasoning}{Style.RESET_ALL}')
             thoughts_message = f'NIGHT ROUND THOUGHTS: {reasoning}'
             seer_players[0].append_memory(thoughts_message)
 
             if choice == 'player':
                 player_name = action['player']
                 player = next((p for p in self.players if p.player_name == player_name), None)
-                meesage = f'GAME (NIGHT PHASE): You are have seen that {player.player_name} has the card: {player.card}.'
-                seer_players[0].append_memory(meesage)
+                message = f'GAME (NIGHT PHASE): You are have seen that {player.player_name} has the card: {player.card}.'
+                seer_players[0].append_memory(message)
                 print()
                 print(f'The seer looked at a card from {player.colored_name} and saw the card: {Fore.RED}{Style.BRIGHT}{player.card}{Style.RESET_ALL}')
             else:
                 viewed_cards = random.sample(self.middle_cards, k=2)
-                meesage = f'GAME (NIGHT PHASE): You have seen two cards in the center of the table: {viewed_cards[0]} and {viewed_cards[1]}'
-                seer_players[0].append_memory(meesage)
+                message = f'GAME (NIGHT PHASE): You have seen two cards in the center of the table: {viewed_cards[0]} and {viewed_cards[1]}'
+                seer_players[0].append_memory(message)
                 print()
                 print(f'The seer looked at two cards from the center of the table and saw the cards: {Fore.RED}{Style.BRIGHT}{viewed_cards[0]}{Style.RESET_ALL}, {Fore.RED}{Style.BRIGHT}{viewed_cards[1]}{Style.RESET_ALL}')
 
@@ -231,7 +231,7 @@ class Game:
                 target_player = action['target_player']
 
             print()
-            print(f'{player.colored_name} {Fore.RED}{Style.DIM}(thougts): {reasoning}{Style.RESET_ALL}')
+            print(f'{player.colored_name} {Fore.RED}{Style.DIM}(thoughts): {reasoning}{Style.RESET_ALL}')
             thoughts_message = f'DAY ROUND THOUGHTS: {reasoning}'
             player.append_memory(thoughts_message)
 
@@ -258,7 +258,7 @@ class Game:
             voted_player = action['voted_player']
 
             print()
-            print(f'{player.colored_name} {Fore.RED}{Style.DIM}(thougts): {reasoning}{Style.RESET_ALL}')
+            print(f'{player.colored_name} {Fore.RED}{Style.DIM}(thoughts): {reasoning}{Style.RESET_ALL}')
             print(f'{player.colored_name} [{player.display_card}]: I am voting for {voted_player}')
 
             message = f'{player.player_name}: I am voting for {voted_player}'
