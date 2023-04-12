@@ -4,6 +4,12 @@ import colorama
 import random
 import json
 from colorama import Fore, Style
+from dotenv import load_dotenv
+
+if os.path.isfile('.env'):
+    load_dotenv()
+
+    openai.api_key = os.getenv("OPENAI_API_KEY")
 
 colorama.init()
 
