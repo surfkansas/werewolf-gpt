@@ -13,6 +13,29 @@ if os.path.isfile('.env'):
 
 colorama.init()
 
+def return_dict_from_json_or_fix(message_json: str) -> dict:
+    """
+    If the data is valid json, return it as a dictionary, if not, it will attempt to use AI to intelligently fix the JSON.
+
+    If that still does not work, it will print the original (bad) JSON, the new bad JSON, and then exit gracefully.
+    """
+
+    try:
+        message_dict = json.loads(message_json)
+    
+    except ValueError:
+        completion = openai.ChatCompletion.create(model='gpt-3.5-turbo', temperature=0.8, messages=[{'role': 'user', 'content': f"I have a JSON string, but it is not valid JSON. Could you make it valid? Please respond ONLY in valid JSON! Do not comment on your response. Do not start or end with backpacks (\"`\")!  You must ONLY respond in JSON! Anything after the period is JSON I need you to fix. {message_json}"}])
+        fixed_json = completion.choices[0].message.content
+        try:
+            message_dict = json.loads(fixed_json)
+        
+        except ValueError:
+            print("Unable to get valid JSON response from GPT. Exiting program gracefully.")
+            print(f"Debug info:\n\tOriginal Response: {message_json}\n\tAttempted Fix: {fixed_json}")
+            exit(1)
+
+    return message_dict
+
 class Player:
 
     player_colors = [Fore.YELLOW, Fore.GREEN, Fore.BLUE, Fore.MAGENTA, Fore.CYAN]
@@ -187,7 +210,7 @@ class Game:
             print(f'There is one seer in play, {seer_players[0].colored_name}. They are thinking about their action.')
             prompt = open('prompts/seer.txt').read()
             response = seer_players[0].run_prompt(prompt)
-            action = json.loads(response)
+            action = return_dict_from_json_or_fix(response)
             reasoning = action['reasoning']
             choice = action['choice']
             print()
@@ -230,7 +253,7 @@ class Game:
 
             response = player.run_prompt(day_prompt)
 
-            action = json.loads(response)
+            action = return_dict_from_json_or_fix(response)
             reasoning = action['reasoning']
             statement = action['statement']
             if 'target_player' in action:
@@ -259,7 +282,7 @@ class Game:
         for player in self.players:
             response = player.run_prompt(vote_prompt)
 
-            action = json.loads(response)
+            action = return_dict_from_json_or_fix(response)
             reasoning = action['reasoning']
             voted_player = action['voted_player']
 
