@@ -11,7 +11,7 @@ class Player:
 
     player_colors = [Fore.YELLOW, Fore.GREEN, Fore.BLUE, Fore.MAGENTA, Fore.CYAN]
 
-    def __init__(self, player_name, player_number, other_players, card, card_list):
+    def __init__(self, player_name, player_number, other_players, card, card_list, use_gpt4):
         self.player_number = player_number
         self.player_name = player_name
         self.other_players = other_players
@@ -20,6 +20,7 @@ class Player:
         self.display_card = card
         self.rules_prompt_prefix = open('prompts/rules.txt').read().format(player_name = player_name, other_players = '; '.join(other_players), card = card, card_list = card_list)
         self.memory = []
+        self.use_gpt4 = use_gpt4
 
     def introduce_player(self):
         print(f'Player number {self.player_number} is named {self.colored_name}, and they have the {Fore.RED}{Style.BRIGHT}{self.card}{Style.RESET_ALL} card.')
@@ -35,33 +36,25 @@ class Player:
 
         full_prompt += prompt
 
-        completion = openai.ChatCompletion.create(model='gpt-3.5-turbo', temperature=0.8, messages=[{'role': 'user', 'content': full_prompt}])
+        model = 'gpt-3.5-turbo' if not self.use_gpt4 else 'gpt-4'
+        completion = openai.ChatCompletion.create(model=model, temperature=0.8, messages=[{'role': 'user', 'content': full_prompt}])
         return completion.choices[0].message.content
+
 
 class Game:
 
-    def __init__(self, player_count, discussion_depth):
-        if player_count < 3 or player_count > 5:
-            raise ValueError("Number of players must be between 3 and 5 inclusive.")
-        alloted_cards = ['Werewolf', 'Werewolf', 'Seer', 'Mason', 'Mason']
-        while len(alloted_cards) < player_count + 3:
-            if 'Minion' not in alloted_cards:
-                alloted_cards.append('Minion')
-            else:
-                alloted_cards.append('Villager')
-        card_list = '* ' + '\n* '.join(alloted_cards)
-        self.card_list = card_list
-        random.shuffle(alloted_cards) 
-        self.player_names = self.get_player_names(player_count)
-        self.players = [Player(name, i, self.get_other_players(i, self.player_names), alloted_cards[i - 1], card_list) for i, name in enumerate(self.player_names, 1)]
-        self.middle_cards = alloted_cards[player_count:] 
+    def __init__(self, player_count, discussion_depth, use_gpt4):
+        self.player_count = player_count
         self.discussion_depth = discussion_depth
-
-    def show_middle_cards(self):
-        print()
-        print(f'The cards face-down in the middle of the board are {Fore.RED}{Style.BRIGHT}{self.middle_cards[0]}{Style.RESET_ALL}, {Fore.RED}{Style.BRIGHT}{self.middle_cards[1]}{Style.RESET_ALL}, and {Fore.RED}{Style.BRIGHT}{self.middle_cards[2]}{Style.RESET_ALL}')
+        self.card_list = None
+        self.player_names = []
+        self.players = []
+        self.middle_cards = []
+        self.use_gpt4 = use_gpt4
 
     def play(self):
+
+        self.initialize_game()
         
         print(open('intro.txt').read())
 
@@ -94,6 +87,25 @@ class Game:
 
         self.vote()
 
+    def initialize_game(self):
+        if self.player_count < 3 or self.player_count > 5:
+            raise ValueError("Number of players must be between 3 and 5 inclusive.")
+        alloted_cards = ['Werewolf', 'Werewolf', 'Seer', 'Mason', 'Mason']
+        while len(alloted_cards) < self.player_count + 3:
+            if 'Minion' not in alloted_cards:
+                alloted_cards.append('Minion')
+            else:
+                alloted_cards.append('Villager')
+        card_list = '* ' + '\n* '.join(alloted_cards)
+        self.card_list = card_list
+        random.shuffle(alloted_cards) 
+        self.player_names = self.get_player_names(self.player_count)
+        self.players = [Player(name, i, self.get_other_players(i, self.player_names), alloted_cards[i - 1], card_list, self.use_gpt4) for i, name in enumerate(self.player_names, 1)]
+        self.middle_cards = alloted_cards[self.player_count:] 
+        
+    def show_middle_cards(self):
+        print()
+        print(f'The cards face-down in the middle of the board are {Fore.RED}{Style.BRIGHT}{self.middle_cards[0]}{Style.RESET_ALL}, {Fore.RED}{Style.BRIGHT}{self.middle_cards[1]}{Style.RESET_ALL}, and {Fore.RED}{Style.BRIGHT}{self.middle_cards[2]}{Style.RESET_ALL}')
 
     def night_werewolf(self):
         print()
@@ -306,5 +318,5 @@ class Game:
     def get_other_players(self, player_number, player_names):
         return [name for i, name in enumerate(player_names, 1) if i != player_number]
 
-game = Game(player_count = 5, discussion_depth = 15)
+game = Game(player_count = 5, discussion_depth = 15, use_gpt4 = True)
 game.play()
