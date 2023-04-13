@@ -26,14 +26,22 @@ python3 werewolf.py
 
 You will now be treated to a session of five AI instances trying to outsmart each other in a social deduction game.
 
+## Recorded Playthroughs
+
+I have included some recorded playthroughs in the [/recorded-games](recorded-games/) folder. These allow people to see the AI and broker in action *without* having to run locally. (And they are great links to share to social media to show of how amazing AI has become!)
+
 ## Issues
 
-First, there is NO error handling. Despite my best prompt engineering, sometimes the model comes back with something that is not a perfect JSON response. This will crash the game. Yes, I hope to fix this in the future.
+First, I have not yet implemented any of the following roles: Doppelganger, Robber, Troublemaker, Drunk, Insomniac, Tanner, Hunter. Yes, I plan on implementing them soon. But, they aren't implemented yet.
 
-Second, I have not yet implemented any of the following roles: Doppelganger, Robber, Troublemaker, Drunk, Insomniac, Tanner, Hunter. Yes, I plan on implementing them soon. But, they aren't implemented yet.
+Second, the group can descend into an intersting GroupThink where everone is parroting other players. This isn't a bug, per se, but more an emergent behavior about how the GPT model seems to be overly agreeable. I need to figure out how to make it more ruthless. (But, should I *REALLY* focus on making an AI more ruthless?). This is only an issue when running with the GPT 3.5 backend, so I might leave this as a cool example of how the two models differ.
 
-Third, the group can descend into an intersting GroupThink where everone is parroting other players. This isn't a bug, per se, but more an emergent behavior about how the GPT model seems to be overly agreeable. I need to figure out how to make it more ruthless. (But, should I *REALLY* focus on making an AI more ruthless?)
+Third, the AI seems to *"miss"* on deeper strategy. The main miss is that the Minion player will sometimes try to avoid suspicion and implicate a Werewolf. I need to do some additional prompt engineering to include some strategy hint. (Note: It is cool to see how much strategy the model - especially GPT 4 - is able to derived *just* from the rules.)
 
 ## Pull Requests
 
 I accept pull requests. I'm just super busy with my "day job" in AI so can't spend much time on GitHub fun. But, please submit - especially if you fix one of the issues above.
+
+## Contribution Credits
+
+* Yosef Frost - [@FrostyTheSouthernSnowman](https://github.com/FrostyTheSouthernSnowman) - Contributed the *very* cool use of the AI to help re-write bad JSON from responses! (And this dude is stil in ***HIGH SCHOOL!*** I am *super* impressed with the creativity!)
