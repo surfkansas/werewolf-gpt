@@ -498,10 +498,6 @@ class Game:
 
             self.rendering_engine.render_player_vote(player, voted_player, reasoning)
 
-            message = f'{player.player_name}: I am voting for {voted_player}'
-            for i_player in self.players:
-                i_player.append_memory(message)
-
             votes[voted_player] += 1
 
         self.rendering_engine.render_vote_results(votes, self.players)
