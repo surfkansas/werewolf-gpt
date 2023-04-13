@@ -26,6 +26,33 @@ python3 werewolf.py
 
 You will now be treated to a session of five AI instances trying to outsmart each other in a social deduction game.
 
+## Command Arguments
+
+If you want to do cool things like use GPT-4 (assuming you have access to the API), render results to Markdown, or control the size of the game, you can use additional command line args. I am using the `click` library to make this a possibility.
+
+The following example shows all of the args in use:
+
+```shell
+python3 werewolf.py --player-count 4 --discussion-depth 3 --use-gpt4 --render-markdown
+```
+
+If you want to the see the help for the game, you can run the following command, which will supply help on all args.
+
+```shell
+python3 werewolf.py --help
+
+Usage: werewolf.py [OPTIONS]
+
+Options:
+  --player-count INTEGER      Number of players
+  --discussion-depth INTEGER  Number of discussion questions
+  --use-gpt4                  Use GPT-4 for discussion
+  --render-markdown           Render output as markdown
+  --help                      Show this message and exit.
+```
+
+The defaults are 5 players, 20 discussion questions, rendering the console, using the GPT 3.5 Turbo model.
+
 ## Recorded Playthroughs
 
 I have included some recorded playthroughs in the [/recorded-games](recorded-games/) folder. These allow people to see the AI and broker in action *without* having to run locally. (And they are great links to share to social media to show of how amazing AI has become!)

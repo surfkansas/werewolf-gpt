@@ -1,17 +1,18 @@
-import os
-import openai 
-import colorama
-import random
 import json
-import sys
+import os
+import random
 import time
-from dotenv import load_dotenv
+
+import click
+import colorama
+import dotenv
+import openai
 from colorama import Fore, Style
 
 colorama.init()
 
 if os.path.isfile('.env'):
-    load_dotenv()
+    dotenv.load_dotenv()
     openai.api_key = os.getenv('OPENAI_API_KEY')
 
 def return_dict_from_json_or_fix(message_json, use_gpt4):
@@ -437,7 +438,7 @@ class Game:
 
         target_player = None
 
-        while discussion_count <= self.discussion_depth:
+        while discussion_count < self.discussion_depth:
             if target_player is None:
                 pointer += 1
                 if pointer > len(self.players) - 1:
@@ -540,5 +541,17 @@ class Game:
     def get_other_players(self, player_number, player_names):
         return [name for i, name in enumerate(player_names, 1) if i != player_number]
 
-game = Game(player_count = 5, discussion_depth = 20, use_gpt4 = False, render_markdown = True)
-game.play()
+#game = Game(player_count = 5, discussion_depth = 20, use_gpt4 = True    , render_markdown = False)
+#game.play()
+
+@click.command()
+@click.option('--player-count', type=int, default=5, help='Number of players')
+@click.option('--discussion-depth', type=int, default=20, help='Number of discussion rounds')
+@click.option('--use-gpt4', is_flag=True, default=False, help='Use GPT-4 for discussion')
+@click.option('--render-markdown', is_flag=True, default=False, help='Render output as markdown')
+def play_game(player_count, discussion_depth, use_gpt4, render_markdown):
+    game = Game(player_count=player_count, discussion_depth=discussion_depth, use_gpt4=use_gpt4, render_markdown=render_markdown)
+    game.play()
+
+if __name__ == '__main__':
+    play_game()
