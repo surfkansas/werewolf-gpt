@@ -91,6 +91,10 @@ Second, the group can descend into an intersting GroupThink where everone is par
 
 Third, the AI seems to *"miss"* on deeper strategy. The main miss is that the Minion player will sometimes try to avoid suspicion and implicate a Werewolf. I need to do some additional prompt engineering to include some strategy hint. (Note: It is cool to see how much strategy the model - especially GPT 4 - is able to derived *just* from the rules.)
 
+## Future Ideas
+
+I realized I (rather poorly) built the voting logic as procedural code. This should *ABSOLUTELY* be an AI doing the scoring. Please drop a PR for that!
+
 ## Pull Requests
 
 I accept pull requests. I'm just super busy with my "day job" in AI so can't spend much time on GitHub fun. But, please submit - especially if you fix one of the issues above.
