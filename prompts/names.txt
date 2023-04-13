@@ -1,5 +1,0 @@
-Please come up with {player_count} player names for a game of Werewolf. 
-
-Each player name must be unique. Please pick common Transylvanian names. Please pick no names that are also English words.
-
-Please respond with ONLY the names seperated by a semicolon and NO ADDITIONAL TEXT.
