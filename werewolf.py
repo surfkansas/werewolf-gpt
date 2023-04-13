@@ -444,8 +444,13 @@ class Game:
                     pointer = 0
                 player = self.players[pointer]
             else:
-                player = [player for player in self.players if player.player_name == target_player][0]
-                target_player = None
+                try:
+                    player = [player for player in self.players if player.player_name == target_player][0]
+                    target_player = None
+                except:
+                    print()
+                    print(f'SYSTEM NOTE: The AI supplied {target_player} as the target player. To avoid a crash, we will skip this directed discussion.')
+                    print()
 
             self.rendering_engine.render_player_turn_init(player)
 
