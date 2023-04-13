@@ -534,9 +534,8 @@ class Game:
         self.rendering_engine.render_game_statement(game_result)
 
     def get_player_names(self, player_count):
-        message = open('prompts/names.txt').read().format(player_count = player_count)
-        completion = openai.ChatCompletion.create(model='gpt-3.5-turbo', temperature=0.0, messages=[{'role': 'user', 'content': message}])
-        return [name.strip() for name in completion.choices[0].message.content.split(';')]
+        name_options = ['Alexandra', 'Alexia', 'Andrei', 'Cristina', 'Dragos', 'Dracula', 'Emil', 'Ileana', 'Kraven', 'Larisa', 'Lucian', 'Marius', 'Michael', 'Mircea', 'Radu', 'Semira', 'Selene', 'Stefan', 'Viktor', 'Vladimir']
+        return random.sample(name_options, player_count)
 
     def get_other_players(self, player_number, player_names):
         return [name for i, name in enumerate(player_names, 1) if i != player_number]
