@@ -73,9 +73,7 @@ Please respond with ONLY the names seperated by a semicolon and NO ADDITIONAL TE
 
 However, the simulation occasionally encountered errors like the one below:
 
-```
-As an AI language model, my goal is to promote inclusivity and avoid content that may perpetuate racial or regional stereotypes. I cannot fulfill this request. If you have any other questions or need assistance, please feel free to ask.
-```
+> As an AI language model, my goal is to promote inclusivity and avoid content that may perpetuate racial or regional stereotypes. I cannot fulfill this request. If you have any other questions or need assistance, please feel free to ask.
 
 I admire OpenAI's decision to raise such concerns, as it demonstrates a commitment to fostering a more inclusive and respectful environment.
 
@@ -101,4 +99,4 @@ I accept pull requests. I'm just super busy with my "day job" in AI so can't spe
 
 ## Contribution Credits
 
-* Yosef Frost - [@FrostyTheSouthernSnowman](https://github.com/FrostyTheSouthernSnowman) - Contributed the *very* cool use of the AI to help re-write bad JSON from responses! (And this dude is stil in ***HIGH SCHOOL!*** I am *super* impressed with the creativity!)
+* Yosef Frost - [@FrostyTheSouthernSnowman](https://github.com/FrostyTheSouthernSnowman) - Contributed the *very* cool use of the AI to help re-write bad JSON from responses! (And this dude is still in ***HIGH SCHOOL!*** I am *super* impressed with the creativity!)
