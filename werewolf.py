@@ -5,9 +5,54 @@ import random
 import json
 import sys
 import time
+from dotenv import load_dotenv
 from colorama import Fore, Style
 
 colorama.init()
+
+if os.path.isfile('.env'):
+    load_dotenv()
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+
+def return_dict_from_json_or_fix(message_json, use_gpt4):
+    """
+    If the data is valid json, return it as a dictionary, if not, it will attempt to use AI to intelligently fix the JSON.
+    If that still does not work, it will print the original (bad) JSON, the new bad JSON, and then exit gracefully.
+
+    This totally badass code came from Yosef Frost: https://github.com/FrostyTheSouthernSnowman
+    """
+
+    model = 'gpt-3.5-turbo' if not use_gpt4 else 'gpt-4'
+
+    try:
+        message_dict = json.loads(message_json)
+
+    except ValueError:
+        print('Unable to get valid JSON response from GPT. Attempting to fix JSON.')
+        print(message_json)
+        print('I have a JSON string, but it is not valid JSON. Could you make it valid? Please respond ONLY in valid JSON! Do not comment on your response. ' \
+                + 'Do not start or end with backpacks ("`")!  You must ONLY respond in JSON! Anything after the period is JSON I need you to fix. The original message that contains the ' \
+                + f'bad JSON is: \n {message_json}')
+        completion = openai.ChatCompletion.create(model=model, temperature=0.8, messages=[
+            {
+                'role': 'user', 
+                'content': 'I have a JSON string, but it is not valid JSON. Possibly, the message contains other text besides just the JSON. Could you make it valid? Or, ' \
+                + 'if there is valid JSON in the response, please just extact the JSON and do NOT update it. Please respond ONLY in valid JSON! Do not comment on your response. Do not start or ' \
+                + 'end with backpacks ("`" or "```")!  You must ONLY respond in JSON! Anything after the colon is JSON I need you to fix. The original message that contains the ' \
+                + f'bad JSON is: \n {message_json}'
+            }])
+        fixed_json = completion.choices[0].message.content
+        print(fixed_json)
+        try:
+            message_dict = json.loads(fixed_json)
+            print(message_dict)
+
+        except ValueError:
+            print('Unable to get valid JSON response from GPT. Exiting program gracefully.')
+            print(f'Debug info:\n\tOriginal Response: {message_json}\n\tAttempted Fix: {fixed_json}')
+            exit(1)
+
+    return message_dict
 
 class Player:
 
@@ -352,7 +397,7 @@ class Game:
             prompt = open('prompts/seer.txt').read()
             response = seer_players[0].run_prompt(prompt)
 
-            action = json.loads(response)
+            action = return_dict_from_json_or_fix(response, self.use_gpt4)
             reasoning = action['reasoning']
             choice = action['choice']
             
@@ -365,16 +410,16 @@ class Game:
                 player_name = action['player']
                 player = next((p for p in self.players if p.player_name == player_name), None)
                 
-                meesage = f'GAME (NIGHT PHASE): You are have seen that {player.player_name} has the card: {player.card}.'
-                seer_players[0].append_memory(meesage)
+                message = f'GAME (NIGHT PHASE): You are have seen that {player.player_name} has the card: {player.card}.'
+                seer_players[0].append_memory(message)
 
                 self.rendering_engine.render_system_message('The seer looked at a card from {ref_players[0]} and saw the card {ref_cards[0]}',
                     ref_players = [player], ref_cards = [player.card])
             else:
                 viewed_cards = random.sample(self.middle_cards, k=2)
                 
-                meesage = f'GAME (NIGHT PHASE): You have seen two cards in the center of the table: {viewed_cards[0]} and {viewed_cards[1]}'
-                seer_players[0].append_memory(meesage)
+                message = f'GAME (NIGHT PHASE): You have seen two cards in the center of the table: {viewed_cards[0]} and {viewed_cards[1]}'
+                seer_players[0].append_memory(message)
                 
                 self.rendering_engine.render_system_message('The seer looked at two cards from the center of the table and saw the cards {ref_cards[0]} and {ref_cards[1]}',
                     ref_cards = viewed_cards)
@@ -406,7 +451,7 @@ class Game:
 
             response = player.run_prompt(day_prompt)
 
-            action = json.loads(response)
+            action = return_dict_from_json_or_fix(response, self.use_gpt4)
             reasoning = action['reasoning']
             statement = action['statement']
             if 'target_player' in action:
@@ -442,7 +487,7 @@ class Game:
 
             response = player.run_prompt(vote_prompt)
 
-            action = json.loads(response)
+            action = return_dict_from_json_or_fix(response, self.use_gpt4)
             reasoning = action['reasoning']
             voted_player = action['voted_player']
 
@@ -494,5 +539,5 @@ class Game:
     def get_other_players(self, player_number, player_names):
         return [name for i, name in enumerate(player_names, 1) if i != player_number]
 
-game = Game(player_count = 5, discussion_depth = 20, use_gpt4 = True, render_markdown = True)
+game = Game(player_count = 5, discussion_depth = 20, use_gpt4 = False, render_markdown = True)
 game.play()
