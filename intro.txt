@@ -1,4 +1,4 @@
-The following is an AI simulation of the game One Night Ultimate Werewolf. The different AI participants will try to convince each that they are NOT the werewolves and win the game.
+The following is a simulation of an AI group playing of the game One Night: Ultimate Werewolf. The different AI participants will try to convince each that they are NOT the werewolves and win the game.
 
 If you enjoy this simulation, please buy the actual game from Bezier Games at the following url: https://beziergames.com/products/one-night-ultimate-werewolf
 
