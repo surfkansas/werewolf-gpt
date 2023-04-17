@@ -29,11 +29,6 @@ def return_dict_from_json_or_fix(message_json, use_gpt4):
         message_dict = json.loads(message_json)
 
     except ValueError:
-        print('Unable to get valid JSON response from GPT. Attempting to fix JSON.')
-        print(message_json)
-        print('I have a JSON string, but it is not valid JSON. Could you make it valid? Please respond ONLY in valid JSON! Do not comment on your response. ' \
-                + 'Do not start or end with backpacks ("`")!  You must ONLY respond in JSON! Anything after the period is JSON I need you to fix. The original message that contains the ' \
-                + f'bad JSON is: \n {message_json}')
         completion = openai.ChatCompletion.create(model=model, temperature=0.8, messages=[
             {
                 'role': 'user', 
@@ -43,10 +38,8 @@ def return_dict_from_json_or_fix(message_json, use_gpt4):
                 + f'bad JSON is: \n {message_json}'
             }])
         fixed_json = completion.choices[0].message.content
-        print(fixed_json)
         try:
             message_dict = json.loads(fixed_json)
-            print(message_dict)
 
         except ValueError:
             print('Unable to get valid JSON response from GPT. Exiting program gracefully.')
